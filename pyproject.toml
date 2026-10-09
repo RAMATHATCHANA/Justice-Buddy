@@ -1,0 +1,17 @@
+[project]
+name = "repl-nix-workspace"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "apscheduler>=3.11.0",
+    "fastapi>=0.119.1",
+    "googletrans==4.0.0rc1",
+    "psycopg2-binary>=2.9.11",
+    "pydantic>=2.12.3",
+    "python-dotenv>=1.1.1",
+    "python-multipart>=0.0.20",
+    "sqlalchemy>=2.0.44",
+    "twilio>=9.8.4",
+    "uvicorn>=0.38.0",
+]

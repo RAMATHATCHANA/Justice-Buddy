@@ -1,0 +1,164 @@
+Create a full-stack legal assistant web app called "JusticeBuddy" with the following features:
+
+🔹 FRONTEND (React + Tailwind CSS + Vite):
+- Clean, modern UI with pastel sandal as default theme (light yellow/cream background, dark text), with Light/Dark mode toggle on top-right.
+- Responsive design with proper padding on all sides. Pages should not touch screen edges.
+- Home page with three horizontally aligned hoverable boxes:
+  1. Track Case – leads to /track
+  2. Legal Chatbot – leads to /chatbot
+  3. Admin Dashboard – leads to /admin
+- Add slight hover animations (scale and border glow).
+- "How it Works" should be a separate route `/how-it-works` with nav options: Home, Track Case, Chatbot, etc.
+- Track Case form: left-aligned input box (width ~1/3 to 1/2), with red asterisks for required fields.
+- Chatbot: centered UI with padding on both sides (~1/4 each).
+- Navigation bar: top-right horizontal layout with clean links (no emojis/icons except moon ☽ toggle).
+
+🔹 BACKEND (FastAPI):
+- NLP-powered chatbot with intent detection (fallback to SQLite knowledge base if no intent match).
+- Multilingual support (Tamil, Hindi, Telugu, Kannada, English).
+- Case Tracking API that takes:
+  - Required Inputs: CNR Number, Court Type, State, District, Party Name
+  - Fetches live case status from [https://ecourts.gov.in/](https://ecourts.gov.in/) (simulate scraping or placeholder API if no public endpoint).
+  - Store last fetched status in SQLite or PostgreSQL.
+
+🔹 NOTIFICATIONS:
+- Integrate Twilio API to send WhatsApp alerts to users when there is a change in case status.
+- Store user number and last status in DB.
+- Periodically check for status change via a background job or endpoint.
+
+🔹 DEPLOYMENT SETUP:
+- Use `uvicorn` to run FastAPI on port 8000.
+- Use Vite to run React frontend on port 5173 (or any open port).
+- Handle CORS between frontend and backend.
+- Add `vite.config.js` with allowedHosts configured properly for Replit subdomain.
+- Configure `.replit` and `replit.nix` to run both frontend and backend in parallel.
+
+This app will help users track their legal cases and get notified in real-time even when ChatGPT can't access eCourts data.
+Build all UI pages fully responsive and production-ready with attractive spacing and transitions.
+
+//2nd Pages
+Create a full-stack React + Vite project with TailwindCSS for styling.
+
+🔷 Set up the project with the following:
+- React 19, React Router DOM for routing
+- Tailwind CSS with DaisyUI (for theming and pastel colors)
+- Enable Light/Dark/Pastel themes toggle via button on top-right using DaisyUI
+- Default theme should be a soft pastel like `cupcake`, toggle between `cupcake`, `light`, `dark`
+
+📁 Pages Required:
+1. **Home Page (`/`)**
+   - Should have a centered container with proper top and side padding (like `px-6 py-10`)
+   - Inside it, place 3 horizontally aligned cards:
+     - 📋 Track Cases – Button: Start Tracking →
+     - 💬 Legal Chatbot
+     - 📊 Admin Dashboard
+   - All 3 cards should:
+     - Be in a soft-colored box (rounded-xl, shadow-md)
+     - Have smooth hover animation: scale up slightly + glowing border
+     - Use flex or grid to align side-by-side on desktop, stack on mobile
+     - Wrap all 3 inside a single container with padding and margin
+
+2. **Track Case Page (`/track-case`)**
+   - Use a left-aligned form box with `max-w-md` or 50% width
+   - Add `pl-10 pr-10 pt-6` to the container
+   - Form Inputs:
+     - CNR Number (mandatory*)
+     - Petitioner Name (optional)
+     - Mobile Number (mandatory*)
+     - Date of Hearing (optional)
+   - All mandatory fields must have a red-colored asterisk (`*`)
+   - Submit button with hover effect
+
+3. **Chatbot Page (`/chatbot`)**
+   - Chat window must be centered with padding on both sides
+   - Keep `max-w-3xl` with `mx-auto px-6 py-10` for proper spacing
+   - Chat input box and messages should feel like WhatsApp (bubble style)
+   - Works smoothly on both mobile and desktop
+
+4. **How it Works Page (`/how-it-works`)**
+   - Explain:
+     - Chatbot answers legal questions from Department of Justice (DoJ)
+     - Real-time case status tracking from eCourts using CNR Number
+     - WhatsApp notification sent when case status changes
+   - Nicely formatted layout with readable sections
+
+🧭 Navbar (common across all pages):
+- Use a top navbar with `Home | Track Case | Chatbot | How it Works`
+- Align to left, add some margin (`px-6 py-4`)
+- Right side: Add theme toggle (Light / Dark / Cupcake)
+
+🧼 UI Cleanliness:
+- All pages must **not start at the extreme top** — add `pt-10 px-6` to every page
+- Use **soft pastel color palette** (default cupcake)
+- Fonts: Use `font-sans`, large enough and readable
+- All buttons with hover animation
+
+✅ Use React Router DOM for navigation
+✅ Tailwind CSS + DaisyUI for design
+✅ Each page/component in its own file
+
+Make sure everything is mobile-responsive, pixel perfect, clean, and modern for a legal chatbot + tracking tool. Final UI should feel polished, calming, and user-friendly.
+
+//3rd Page
+I want to build a full-stack legal assistant web app called **JusticeBuddy** in one single Replit project.
+
+The app must do these 4 core things:
+
+----------------------------------------------------------
+🔹 1. eCourts Case Status Fetching (via API or Scraping)
+----------------------------------------------------------
+Create a route `/track_case` in the FastAPI backend that:
+- Accepts the following POST inputs:
+    - CNR Number (mandatory)
+    - State (mandatory)
+    - District (mandatory)
+    - Court Name (mandatory)
+    - Filing Year (mandatory)
+    - User Phone Number (mandatory, for WhatsApp)
+- Calls a placeholder or mock eCourts API to simulate fetching current case status using these fields.
+- Stores the CNR record and current status in SQLite (or PostgreSQL via Supabase).
+- Implements a background check (e.g., every 30 mins/hour) to compare new status with old. If changed, send a **WhatsApp notification** using Twilio.
+
+----------------------------------------------------------
+🔹 2. DOJ Chatbot with Multilingual NLP and Fallback
+----------------------------------------------------------
+Create another route `/process` in the backend that:
+- Accepts a user query in any Indian language (Tamil, Hindi, Telugu, Kannada, or English)
+- Preprocesses the message (cleaning, normalization)
+- Classifies intent using basic keyword-based or mock ML logic
+- If intent is known, return fixed response
+- If intent is unknown, search a local **SQLite knowledge base** (FAQ table) and return best match
+- Should always return reply in same language as user query (use Google Translate API or similar)
+- Example FAQ: “How to file RTI?” or “Where to find public prosecutor?”
+
+----------------------------------------------------------
+🔹 3. Frontend – Clean UI (React or Vanilla JS)
+----------------------------------------------------------
+Create a modern, mobile-friendly frontend with the following pages:
+- Home: Welcome message, how to use, JusticeBuddy intro with ⚖️ logo
+- Case Tracker: Form to enter CNR + other fields, submit to `/track_case`
+- Chatbot: Input field to ask any DoJ question (calls `/process`)
+- Admin Panel: Table of tracked CNRs and statuses (pull from backend)
+- Use Tailwind CSS or modern styling. Add loading spinners and validation.
+
+----------------------------------------------------------
+🔹 4. WhatsApp Integration
+----------------------------------------------------------
+- Setup WhatsApp API using **Twilio** (mock if key not provided)
+- Store user’s phone number with CNR
+- When case status changes (via background scheduler), send real-time alert
+- Sample message: “Your case TNMA020012342015 has changed to 'Case Closed'. Click to view more.”
+
+----------------------------------------------------------
+🔹 Other Requirements
+----------------------------------------------------------
+- Backend: FastAPI
+- Frontend: React preferred (else vanilla JS + HTML5/CSS3)
+- DB: SQLite for chatbot + Supabase PostgreSQL for user/CNR data (use `.env`)
+- Support `.env` for Twilio keys, Supabase creds, translation keys
+- Include working README and test cases
+- Multilingual support: Tamil, Hindi, Telugu, Kannada, English
+
+🛑 Don’t use placeholders — give working backend & frontend code in one Replit project. Use mock functions if real API keys are not available. The chatbot must work offline using FAQ fallback even without internet.
+
+This is my last available Replit AI slot — please generate full working code with no missing files, folders, or broken imports.
